@@ -1,6 +1,8 @@
 /** 
  * Title: Get Alert by Incident ID
  * @description Get alert information by incident ID.
+ *              Copied some parts from preset.
+ * 
  * 
  * @author Khirmer Dia <khirmer@beyondgta.com>
  * @version 1.0.2 2022-02-02 Added Alert Ids output
