@@ -1,8 +1,6 @@
 /** 
  * Title: Get Alert by Incident ID
  * @description Get alert information by incident ID.
- *              Copied some parts from preset.
- * 
  * 
  * @author Khirmer Dia <khirmer@beyondgta.com>
  * @version 1.0.2 2022-02-02 Added Alert Ids output
@@ -21,26 +19,30 @@
  var requestUrl = '/api/xm/1/events?'
                  + 'embed=properties&'
                  + 'sortBy=START_TIME&'
-                 + 'status=ACTIVE,SUSPENDED&'
+                 // + 'status=ACTIVE,SUSPENDED,TERMINATED&'
                  + 'sortOrder=ASCENDING&'
                  + 'incidentId='+ incidentId;
- var response = makeAndValidateRequest(requestUrl);
+ var respBody = makeAndValidateRequest(requestUrl);
  
  /** Get information */
- var responseCount = response.total;
  
- if (responseCount > 0) {
-     var alertData = response.data;
+ var responseCount = respBody.total;
+ var alertIds = [];
+ 
+ if (responseCount && responseCount > 0) {
+     var alertData = respBody.data;
      var alertProp = alertData[0].properties;
      var ticketId = alertProp['Ticket ID'];
  
-     var alertIds = [];
-     for (var i = 0; i < alertData.length;) {
-         alertIds.push(alertData[i].eventId);
-     }
-     
+     if (alertData && Array.isArray(alertData)){
+         for (var i = 0; i < alertData.length; i++) {
+           alertIds.push(alertData[i].eventId);
+       }
+       alertIds = alertIds.join(',')
+     }    
  } else {
      console.log('No existing alert with incident');
+     alertIds = '0';
  }
  
  /** Outputs */
